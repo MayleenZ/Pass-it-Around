@@ -11,18 +11,23 @@ app.get('/', (req, res) => {
       <h1>99 Bottles of beer on the wall</h1>
       <a href="/98">take one down, pass it around</a>
     `);
+    // we create an initialization of /98 to get the req.params started on the path. the rest of the req.params keep going from the code below 
   });
 
-app.get('/:number_of_bottles', (req, res) => {
-    console.log(req.params);
-    const numOfBottles = parseInt(req.params.number_of_bottles)
-    let link = ''
-    if (numOfBottles > 0){
-        link = `Take one down, pass it around <a href="/${numOfBottles-1}">${numOfBottles-1} bottles of beer on the wall</a>`;
-    } 
-    res.send(`<h1>${numOfBottles} bottles of beer</h1> ${link} <a href = "/" start over`)
-})
+  app.get('/:numberOfBottles', (req, res) => {
+    const numOfBottles = parseInt(req.params.numberOfBottles);
+    if (numOfBottles === 0) {
+      res.send(`<h1>0 bottles of beer on the wall</h1>
+                <a href="/">Start Over</a>`);
+    } else if (numOfBottles > 0){
+      const link = `<a href="/${numOfBottles - 1}">take one down, pass it around</a>`;
+      res.send(`<h1>${numOfBottles} Bottles of beer on the wall</h1>
+                ${link}`);
+    } else {
+      res.send("<h1>so you dont like beer?</h1>")
+    }
+  });
 
-app.listen(4000, ()=> {
-    console.log("Server is listening on port 4000");
+app.listen(3000, ()=> {
+    console.log("Server is listening on port 3000");
 })
